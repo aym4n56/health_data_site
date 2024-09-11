@@ -1,0 +1,14 @@
+Create script that finds the most predictable features
+
+most predictable is sleep duration. Pointless
+
+2nd and 3rd are stress level and quality of sleep
+
+drop collumn quality of sleep and the other ones we dropped to predict stress
+get mse
+
+drop collumn stress and others we dropped to predict quality of sleep 
+get mse
+
+predicting sleep quality has a lower mse so we will predict sleep quality and use this value to predict stress level
+

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Prediction</title>
+</head>
+<body>
+    <h1>Health Prediction Form</h1>
+    <form id="prediction-form">
+        <label for="gender">Gender:</label>
+        <select id="gender" name="gender">
+            <option value="0">Male</option>
+            <option value="1">Female</option>
+        </select><br><br>
+        
+        <label for="age">Age:</label>
+        <input type="number" id="age" name="age" required><br><br>
+
+        <label for="occupation">Occupation:</label>
+        <select id="occupation" name="occupation">
+            <option value="0">Software Engineer</option>
+            <option value="1">Doctor</option>
+            <option value="2">Sales Representative</option>
+            <option value="3">Teacher</option>
+            <option value="4">Nurse</option>
+            <option value="5">Accountant</option>
+            <option value="6">Scientist</option>
+            <option value="7">Lawyer</option>
+            <option value="8">Manager</option>
+        </select><br><br>
+        
+        <label for="bmi_category">BMI Category:</label>
+        <select id="bmi_category" name="bmi_category">
+            <option value="0">Normal Weight</option>
+            <option value="1">Overweight</option>
+            <option value="2">Obese</option>
+        </select><br><br>
+
+        <label for="sleep_duration">Sleep Duration (hours):</label>
+        <input type="number" step="0.1" id="sleep_duration" name="sleep_duration" required><br><br>
+
+        <label for="physical_activity_level">Physical Activity Level:</label>
+        <input type="number" id="physical_activity_level" name="physical_activity_level" required><br><br>
+
+        <label for="daily_steps">Daily Steps:</label>
+        <input type="number" id="daily_steps" name="daily_steps" required><br><br>
+
+        <label for="heart_rate">Heart Rate:</label>
+        <input type="number" id="heart_rate" name="heart_rate" required><br><br>
+
+        <label for="sleep_disorder">Sleep Disorder:</label>
+        <select id="sleep_disorder" name="sleep_disorder">
+            <option value="0">None</option>
+            <option value="1">Sleep Apnea</option>
+            <option value="2">Insomnia</option>
+        </select><br><br>
+        
+        <button type="submit">Predict</button>
+    </form>
+
+    <h2>Results</h2>
+    <p id="quality_of_sleep_result"></p>
+
+    <script>
+    document.getElementById('prediction-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const formData = {
+            gender: document.getElementById('gender').value,
+            age: document.getElementById('age').value,
+            occupation: document.getElementById('occupation').value,
+            bmi_category: document.getElementById('bmi_category').value,
+            sleep_duration: document.getElementById('sleep_duration').value,
+            physical_activity_level: document.getElementById('physical_activity_level').value,
+            daily_steps: document.getElementById('daily_steps').value,
+            heart_rate: document.getElementById('heart_rate').value,
+            sleep_disorder: document.getElementById('sleep_disorder').value,
+        };
+
+        fetch('/predict', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                alert('Error: ' + data.error);
+            } else {
+                document.getElementById('quality_of_sleep_result').innerText = 'Predicted Quality of Sleep: ' + data.quality_of_sleep.toFixed(1) + ' / 10';
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    });
+    </script>
+</body>
+</html>
